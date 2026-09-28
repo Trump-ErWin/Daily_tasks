@@ -82,11 +82,14 @@
 1. 开始前：git pull --rebase origin main（失败不阻塞任务，记录原因）
 2. 完成后：git add -A（确保新缓存、旧缓存删除、历史记录追加一并提交）→ git commit -m "movie: 第W周电影推荐（替换旧缓存，更新历史记录）"
 3. 若无 git 身份：使用 git -c user.name="Trae Auto Bot" -c user.email="trae-bot@users.noreply.github.com" commit -m "<同第 2 条提交信息>" 提交，禁止修改任何 git 配置
-4. git push origin main；若被拒绝，先 git pull --rebase 再 push（重试 1 次）
-5. 若 push 失败或运行环境不支持 git 命令：保留已生成改动，在运行摘要中如实报告失败原因，不得伪造成功
+4. git push origin main（总计最多尝试 2 次）：
+   - 成功：运行摘要记「push 成功」
+   - 报无凭据错误（could not read Username / Authentication failed）：不要重试，属沙箱运行的预期情况；摘要记「已提交，待平台自动同步」，不计为异常
+   - 其它错误（如远端有新提交被拒绝）：先 git pull --rebase 再 push 1 次，仍失败则如实报告
+5. 任何情况下都不得伪造推送成功；改动至少保留为本地提交，并在摘要中如实记录
 
 # 运行摘要（必须输出）
 - 任务：每周电影推荐；产物：cache/movie/第W周电影介绍详情.md
 - 推荐：N 部（其中重看 M 部）；删除：<旧缓存文件名或「无」>
 - 历史记录：已追加 N 条 / 文件不存在已创建
-- 同步：commit <hash 或「无变更」>；push 成功/失败（原因）；异常：无（或列明细）
+- 同步：commit <hash 或「无变更」>；推送：成功 / 已提交（待平台自动同步）/ 失败（原因）；异常：无（或列明细）
