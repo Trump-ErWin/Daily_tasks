@@ -81,8 +81,9 @@
 # 同步到 GitHub（必须执行）
 1. 开始前：git pull --rebase origin main（失败不阻塞任务，记录原因）
 2. 完成后：git add -A（确保新缓存、旧缓存删除、历史记录追加一并提交）→ git commit -m "movie: 第W周电影推荐（替换旧缓存，更新历史记录）"
-3. git push origin main；若被拒绝，先 git pull --rebase 再 push（重试 1 次）
-4. 若 push 失败或运行环境不支持 git 命令：保留已生成改动，在运行摘要中如实报告失败原因，不得伪造成功
+3. 若无 git 身份：使用 git -c user.name="Trae Auto Bot" -c user.email="trae-bot@users.noreply.github.com" commit -m "<同第 2 条提交信息>" 提交，禁止修改任何 git 配置
+4. git push origin main；若被拒绝，先 git pull --rebase 再 push（重试 1 次）
+5. 若 push 失败或运行环境不支持 git 命令：保留已生成改动，在运行摘要中如实报告失败原因，不得伪造成功
 
 # 运行摘要（必须输出）
 - 任务：每周电影推荐；产物：cache/movie/第W周电影介绍详情.md
