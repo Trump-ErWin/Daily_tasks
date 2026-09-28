@@ -77,8 +77,11 @@
 - 追加前必须先读取现有文件，按上述「文件维护规则」合并
 
 # 同步到 GitHub（必须执行）
-1. 开始前：git pull --rebase origin main（失败不阻塞任务，记录原因）
-2. 完成后：git add -A → git commit -m "food: 美食推荐更新（追加+压缩整理）"
+1. 开始前：git pull --rebase --autostash origin main（失败不阻塞任务，记录原因）
+   - --autostash 自动暂存并恢复未提交改动，避免 "cannot pull with rebase: You have unstaged changes" 报错
+   - 若环境不支持 --autostash：先把未提交改动全部落成提交（产物相关用第 2 条提交信息，无关残留用 "chore: 沙箱遗留改动"），再执行普通 pull --rebase
+   - 若发生冲突：优先保留已生成/本任务改动，解决后继续并如实记录；禁止强推
+2. 完成后：git add -A → git commit -m "food: 美食推荐更新（追加+压缩整理）"（第 1 步兜底路径已提交的产物不重复提交）
 3. 若无 git 身份：使用 git -c user.name="Trae Auto Bot" -c user.email="trae-bot@users.noreply.github.com" commit -m "<同第 2 条提交信息>" 提交，禁止修改任何 git 配置
 4. git push origin main（总计最多尝试 2 次）：
    - 成功：运行摘要记「push 成功」
